@@ -2,6 +2,8 @@ package com.neuedu.sell.service.impl;
 
 import com.neuedu.sell.dto.OrderDTO;
 import com.neuedu.sell.entity.OrderDetail;
+import com.neuedu.sell.enums.OrderStatusEnum;
+import com.neuedu.sell.enums.PayStatusEnum;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,4 +53,27 @@ public class OrderServiceImplTest {
         }
     }
 
+    @Test
+    public void cancelTest(){
+        OrderDTO orderDTO = new OrderDTO();
+        orderDTO.setOrderId("1541074123557685087");
+        List<OrderDetail> list = new ArrayList<>();
+        list.add(new OrderDetail("123442",2));
+        list.add(new OrderDetail("123456",10));
+        orderDTO.setOrderDetailList(list);
+        orderService.cancel(orderDTO);
+    }
+
+    @Test
+    public void finishTest(){
+        OrderDTO orderDTO = new OrderDTO();
+        orderDTO.setOrderId("1541074123557685087");
+        orderService.finish(orderDTO);
+    }
+    @Test
+    public void paid(){
+        OrderDTO orderDTO = new OrderDTO();
+        orderDTO.setOrderId("1541074123557685087");
+        orderService.paid(orderDTO);
+    }
 }
