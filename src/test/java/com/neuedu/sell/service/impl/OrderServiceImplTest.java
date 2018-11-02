@@ -6,6 +6,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
@@ -32,6 +34,20 @@ public class OrderServiceImplTest {
         list.add(new OrderDetail("123456",10));
         orderDTO.setOrderDetailList(list);
         orderService.create(orderDTO);
+    }
+
+    @Test
+    public void findOneTest(){
+        OrderDTO orderDTO = orderService.findOne("1541074123557685087");
+        System.out.println(orderDTO);
+    }
+
+    @Test
+    public void findListTest(){
+        Page<OrderDTO> page = orderService.findList("abc123",new PageRequest(0,2));
+        for (OrderDTO orderDTO : page.getContent()) {
+            System.out.println(orderDTO);
+        }
     }
 
 }

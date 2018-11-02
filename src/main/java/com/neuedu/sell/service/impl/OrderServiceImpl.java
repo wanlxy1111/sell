@@ -1,5 +1,6 @@
 package com.neuedu.sell.service.impl;
 
+import com.neuedu.sell.converter.OrderMaster2OrderDTOConverter;
 import com.neuedu.sell.dto.CartDTO;
 import com.neuedu.sell.dto.OrderDTO;
 import com.neuedu.sell.entity.OrderDetail;
@@ -15,6 +16,7 @@ import com.neuedu.sell.utils.KeyUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -81,12 +83,25 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDTO findOne(String orderId) {
-        return null;
+        //查询订单主表信息
+        OrderMaster orderMaster = orderMasterRepository.findOne(orderId);
+        if (orderMaster == null){
+            throw new SellException(ResultEnum.ORDER_NOT_EXIST);
+        }
+        List<OrderDetail> orderDetailList = orderDetailRepository.findByOrderId(orderId);
+        if (orderDetailList.size() == 0){
+            throw new SellException(ResultEnum.ORDERDETAIL_NOT_EXIST);
+        }
+        OrderDTO orderDTO = OrderMaster2OrderDTOConverter.convert(orderMaster);
+        orderDTO.setOrderDetailList(orderDetailList);
+        return orderDTO;
     }
 
     @Override
     public Page<OrderDTO> findList(String buyerOpenid, Pageable pageable) {
-        return null;
+        Page<OrderMaster> page = orderMasterRepository.findByBuyerOpenid(buyerOpenid,pageable);
+        List<OrderDTO> orderDTOList = OrderMaster2OrderDTOConverter.convert(page.getContent());
+        return new PageImpl<>(orderDTOList,pageable,page.getTotalElements());
     }
 
     @Override
