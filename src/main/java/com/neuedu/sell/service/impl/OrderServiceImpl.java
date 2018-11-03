@@ -70,8 +70,8 @@ public class OrderServiceImpl implements OrderService {
         }
         //3.订单主表入库
         OrderMaster orderMaster = new OrderMaster();
+        orderDTO.setOrderId(orderId);
         BeanUtils.copyProperties(orderDTO,orderMaster);
-        orderMaster.setOrderId(orderId);
         orderMaster.setOrderAmount(orderAmount);
         orderMasterRepository.save(orderMaster);
         //4.扣库存
