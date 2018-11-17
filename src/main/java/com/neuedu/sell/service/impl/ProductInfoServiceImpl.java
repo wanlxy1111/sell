@@ -55,7 +55,7 @@ public class ProductInfoServiceImpl implements ProductInfoService {
             if (cartDTO.getProductQuantity() <= 0){
                 throw new SellException(ResultEnum.QUANTITY_NOT_LEGAL);
             }
-            //判断库尊是否足够
+            //判断库存是否足够
             if (cartDTO.getProductQuantity() > productInfo.getProductStock()){
                 throw new SellException(ResultEnum.STOCK_NOT_ENOUGH);
             }

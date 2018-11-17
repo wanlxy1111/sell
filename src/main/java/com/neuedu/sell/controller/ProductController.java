@@ -62,15 +62,6 @@ public class ProductController {
             productCategoryVOList.add(productCategoryVO);
         }
 
-
-
-
-        /*ResultVO resultVO = new ResultVO();
-        resultVO.setCode(0);
-        resultVO.setMsg("成功");
-        //将类别集合放入到结果对象中
-        resultVO.setData(productCategoryVOList);*/
-
         return ResultVOUtils.success(productCategoryVOList);
     }
 }

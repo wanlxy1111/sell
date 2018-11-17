@@ -1,11 +1,14 @@
 package com.neuedu.sell.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.neuedu.sell.enums.ProductStatusEnum;
+import com.neuedu.sell.utils.EnumUtil;
 import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * 商品库存表
@@ -30,4 +33,13 @@ public class ProductInfo {
     private Integer productStatus = ProductStatusEnum.UP.getCode();
     //类目编号
     private Integer categoryType;
+    //创建时间
+    private Date createTime;
+    //修改时间
+    private Date updateTime;
+
+    @JsonIgnore
+    public ProductStatusEnum getProductStatusEnum(){
+        return EnumUtil.getEnumByCode(productStatus,ProductStatusEnum.class);
+    }
 }

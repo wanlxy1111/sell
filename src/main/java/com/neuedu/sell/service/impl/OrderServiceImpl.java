@@ -22,6 +22,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -90,8 +91,9 @@ public class OrderServiceImpl implements OrderService {
         if (orderMaster == null){
             throw new SellException(ResultEnum.ORDER_NOT_EXIST);
         }
+        //查询订单详情表信息
         List<OrderDetail> orderDetailList = orderDetailRepository.findByOrderId(orderId);
-        if (orderDetailList.size() == 0){
+        if (orderDetailList.size() == 0/*或StringUtils.isEmpty(orderDetailList)*/){
             throw new SellException(ResultEnum.ORDERDETAIL_NOT_EXIST);
         }
         OrderDTO orderDTO = OrderMaster2OrderDTOConverter.convert(orderMaster);
@@ -101,6 +103,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Page<OrderDTO> findList(String buyerOpenid, Pageable pageable) {
+        //查询出主表商品分页
         Page<OrderMaster> page = orderMasterRepository.findByBuyerOpenid(buyerOpenid,pageable);
         List<OrderDTO> orderDTOList = OrderMaster2OrderDTOConverter.convert(page.getContent());
         return new PageImpl<>(orderDTOList,pageable,page.getTotalElements());
